@@ -9,9 +9,9 @@ import { Home } from "../spaces";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
+    <style lang="sass"></style>
   </head>
   <body>
-    <h1>Astro</h1>
-    <Home client:load />
+    <Home client:idle client:only />
   </body>
 </html>
