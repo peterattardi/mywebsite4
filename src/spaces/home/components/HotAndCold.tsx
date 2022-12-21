@@ -4,26 +4,20 @@ import { euclideanDistance } from '../../../utils/math'
 import gsap from 'gsap'
 
 interface HotAndColdProps {
-  listener: () => void
+  onFinish: () => void
 }
 
 const HotAndCold: React.FC<HotAndColdProps> = (props) => {
-  const { listener } = props
+  const { onFinish } = props
   const randomPoints = range(100).map(() => ({
     x: Math.random(),
     y: Math.random(),
   }))
 
   const onTreasureClick = () => {
-    gsap.to('.mask', {
-      '--size': '200%',
-      duration: 1.5,
-    })
     gsap.to('.random-point', { opacity: 0, display: 'none', duration: 0.5 })
-    gsap.to('#Home', { cursor: 'default' })
-    gsap.to('html', { background: 'white' })
 
-    window.removeEventListener('mousemove', listener)
+    onFinish()
   }
 
   useEffect(() => {
@@ -56,8 +50,6 @@ const HotAndCold: React.FC<HotAndColdProps> = (props) => {
             : 'colder'
       }
     })
-
-    return () => window.removeEventListener('mousemove', listener)
   }, [])
 
   return (

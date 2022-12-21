@@ -1,15 +1,29 @@
 import gsap from 'gsap'
-import { HotAndCold, Mask } from './components'
+import { useState } from 'react'
+import { shuffle } from '../../utils/arrays'
+import { HotAndCold, Mask, RotatingText } from './components'
 import './Home.scss'
+import { greetings } from './utils/greetings'
 
 const Home = () => {
-  gsap.to('html', { background: 'black' })
+  const greetingsList = shuffle(greetings)
 
   return (
     <>
       {/* https://studiorotate.com/ */}
       <section id='Home'>
-        <Mask>{(listener) => <HotAndCold listener={listener} />}</Mask>
+        <Mask>
+          {(unmusk, unmusked) => (
+            <>
+              {!unmusked && <HotAndCold onFinish={unmusk} />}
+              {unmusked && (
+                <div className='hero'>
+                  <RotatingText words={greetingsList} />
+                </div>
+              )}
+            </>
+          )}
+        </Mask>
       </section>
     </>
   )

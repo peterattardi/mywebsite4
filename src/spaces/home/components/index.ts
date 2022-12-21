@@ -1,4 +1,5 @@
 import Mask from './Mask'
 import HotAndCold from './HotAndCold'
+import RotatingText from './RotatingText'
 
-export { Mask, HotAndCold }
+export { Mask, HotAndCold, RotatingText }
