@@ -38,7 +38,6 @@ html {
         justify-content: center;
 
         .letter {
-          will-change: transform, rotate, rotateX;
           display: none;
           font-size: 100px;
           transform: rotateX(-90deg);
