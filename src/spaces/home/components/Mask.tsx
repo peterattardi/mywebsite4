@@ -1,42 +1,55 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { debounce } from '../../../utils/animations'
-import gsap from 'gsap'
+import { dom } from '../../../utils/animations'
 
 interface MaskProps {
   children: (unmask: () => void, unmusked: boolean) => ReactNode
 }
 
 const Mask: React.FC<MaskProps> = (props) => {
+  let _clientX = 0
+  let _clientY = 0
+  let _request: number | null = null
   const [unmusked, setUnmusked] = useState(false)
-  gsap.to('html', { background: 'black' })
+  dom('html').style.background = 'black'
   const { children } = props
-  const listener = debounce((ev: MouseEvent) => {
-    const { clientX, clientY } = ev
 
-    gsap.to('.mask', {
-      '--x': `${clientX}px`,
-      '--y': `${clientY}px`,
-    })
-  }, 0)
+  const listener = (ev: MouseEvent) => {
+    const { clientX, clientY } = ev
+    _clientX = clientX
+    _clientY = clientY
+  }
 
   const unmusk = () => {
     window.removeEventListener('mousemove', listener)
-    gsap.to('#Home', { cursor: 'default' })
-    gsap.to('html', { background: 'white' })
 
-    const t = gsap.timeline()
-    t.to('.mask', {
-      '--size': '200%',
-      duration: 1.5,
-    })
+    dom('#Home').style.cursor = 'default'
+    dom('html').style.background = 'white'
 
-    t.then(() => setUnmusked(true))
+    cancelAnimationFrame(_request!)
 
-    t.play()
+    dom('.mask').style.cssText = `
+    transition: clip-path 1s ease-out;
+    --size: 200%;
+    `
+
+    console.log(dom('.mask'))
+
+    setUnmusked(true)
   }
 
   useEffect(() => {
     window.addEventListener('mousemove', listener)
+    const mask = dom('.mask')
+
+    const animate = () => {
+      mask.style.cssText = `
+      --x: ${_clientX}px;
+      --y: ${_clientY}px;
+    `
+      _request = requestAnimationFrame(animate)
+    }
+
+    _request = requestAnimationFrame(animate)
 
     return () => unmusk()
   }, [])
