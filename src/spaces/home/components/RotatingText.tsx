@@ -7,7 +7,7 @@ interface RotatingTextProps {
 const RotatingText = (props: RotatingTextProps) => {
   const { words } = props
 
-  useEffect(() => {
+  const animate = () => {
     const t = gsap.timeline()
 
     range(words.length).forEach((_, index) => {
@@ -17,17 +17,24 @@ const RotatingText = (props: RotatingTextProps) => {
         duration: 0,
         delay: 0.75,
       })
-      t.to(`#word-${index}`, { rotateX: '-90 deg', duration: 0, stagger: 0 })
-      t.to(`#word-${index}`, { rotateX: '0 deg', duration: 0.38, stagger: 0.1 })
-      t.to(`#word-${index}`, {
-        rotateX: '90 deg',
-        duration: 0.18,
-        stagger: 0.1,
-      })
-      t.to(`#word-${index}`, { display: 'none', duration: 0, stagger: 0 })
+      t.to(`#word-${index}`, { rotateX: '-90 deg', duration: 0.2, stagger: 0 })
+      t.to(`#word-${index}`, { rotateX: '0 deg', duration: 0.75, stagger: 0.1 })
+
+      if (index < words.length - 1) {
+        t.to(`#word-${index}`, {
+          rotateX: '90 deg',
+          duration: 0.15,
+          stagger: 0.1,
+        })
+        t.to(`#word-${index}`, { display: 'none', duration: 0, stagger: 0 })
+      }
     })
 
     t.play()
+  }
+
+  useEffect(() => {
+    animate()
   }, [])
 
   return (

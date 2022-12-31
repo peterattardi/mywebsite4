@@ -16,13 +16,18 @@ html {
   width: 100vw;
   cursor: help;
 
+  #skip {
+    position: absolute;
+    padding: 12px;
+    z-index: 1000;
+    color: white;
+  }
+
   .mask {
     position: absolute;
-
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background-color: white;
     clip-path: circle(var(--size, 100px) at var(--x, 50%) var(--y, 50%));
     -webkit-clip-path: circle(var(--size, 75px) at var(--x, 50%) var(--y, 50%));
 
@@ -39,6 +44,8 @@ html {
         justify-content: center;
 
         .letter {
+          position: relative;
+          z-index: 200;
           display: none;
           font-size: 100px;
           transform: rotateX(-90deg);
